@@ -104,7 +104,7 @@ public class DiscordHandler extends Handler {
 		RunCommand(req, c, messageId, u);
 	}
 
-	public static void RunCommand(Request req, MessageChannel c, long messageId, User usr) {
+	public static void RunCommand(final Request req, final MessageChannel c, final long messageId, final User usr) {
 		if(req.user == null) return;
 		Thread t = new Thread(new Runnable() {
 
@@ -137,7 +137,7 @@ public class DiscordHandler extends Handler {
 			String commandRep = "";
 			String[] alf = "abcdefghijklmnop".split("");
 			int i = 0;
-			ArrayList<Pair<String, String>> reactions = new ArrayList<Pair<String, String>>();
+			final ArrayList<Pair<String, String>> reactions = new ArrayList<Pair<String, String>>();
 			for (Pair<String, String> a : r.commands) {
 				String emo = em[i];
 				reactions.add(new Pair<String, String>(em[i], a.getValue()));
@@ -167,7 +167,7 @@ public class DiscordHandler extends Handler {
 				emb.setColor(Color.BLUE);
 
 			if (r.commands.size() != 0) {
-				emb.addField("Alternativ", commands, false);
+				emb.addField("Select", commands, false);
 			}
 			
 			c.sendMessage(emb.build()).queue(msg -> {

@@ -27,10 +27,9 @@ public class MessageListener extends ListenerAdapter {
 			req.server = event.isFromGuild() ? event.getGuild().getId() : "";
 			req.message = event.getMessage().getContentDisplay();
 			req.source = "Discord";
-			req.user = XUser.getFromProvider(event.getAuthor().getId(), "Discord");
+			req.user = XUser.getFromProvider(event.getAuthor().getId(), "Discord", event.getAuthor().getName());
 			req.origid = event.getAuthor().getId();
 			
-			req.user = XUser.getFromProvider(event.getMessage().getAuthor().getId(), "Discord");
 			if(event.getMessage() != null && event.getMessage().getAuthor() != null)
 				req.providerName = event.isFromGuild() && event.getMember() != null ? event.getMember().getEffectiveName() : event.getMessage().getAuthor().getName();
 			req.data = new DiscordSourceData(event);

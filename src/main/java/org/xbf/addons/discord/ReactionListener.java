@@ -33,7 +33,7 @@ public class ReactionListener extends ListenerAdapter {
 				req.server = event.isFromGuild() ? event.getGuild().getId() : "";
 				req.message = command;
 				req.source = "Discord";
-				req.user = XUser.getFromProvider(event.getUserId(), "Discord");
+				req.user = XUser.getFromProvider(event.getUser().getId(), "Discord", event.getUser().getName());
 				req.origid = event.getUserId();
 				req.providerName = event.isFromGuild() ? event.getMember().getEffectiveName() : event.getUser().getName();
 				DiscordHandler.RunCommand(req, event.getChannel(), event.getMessageIdLong(), event.getUser());
