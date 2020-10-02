@@ -1,6 +1,9 @@
 package org.xbf.addons.discord;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
@@ -17,12 +20,15 @@ import org.xbf.core.Plugins.Handler;
 import org.xbf.core.Plugins.XHandler;
 import org.xbf.core.Utils.Timings.Stopwatch;
 
+import com.google.gson.Gson;
+
 import ch.qos.logback.classic.Logger;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 @XHandler(providerName="discord")
 public class DiscordHandler extends Handler {
@@ -57,6 +63,7 @@ public class DiscordHandler extends Handler {
 				l.error("Login failed!");
 				e1.printStackTrace();
 			}
+			client = client.awaitReady();
 			l.info("Registering events");
 			sw.start("Discord.RegisterFramework");
 			sw.stop();
@@ -70,6 +77,11 @@ public class DiscordHandler extends Handler {
 	@Override
 	public void sendMessage(String userid, Response message) {
 		SendResponse(message, client.getUserById(userid).openPrivateChannel().complete());
+	}
+	
+	@Override
+	public void sendMessageToChannel(String channelId, Response message) {
+		SendResponse(message, client.getTextChannelById(channelId));
 	}
 
 	@Override
@@ -134,6 +146,7 @@ public class DiscordHandler extends Handler {
 		if (res.text != null)
 			c.sendMessage(res.text).complete();
 		for (RichResponse r : res.responses) {
+			System.out.println(new Gson().toJson(r));
 			String commandRep = "";
 			String[] alf = "abcdefghijklmnop".split("");
 			int i = 0;
@@ -147,7 +160,11 @@ public class DiscordHandler extends Handler {
 			final String commands = commandRep;
 			EmbedBuilder emb = new EmbedBuilder();
 			if(r.title != null && !r.title.trim().equals(""))
-				emb.setTitle(r.title);
+				if(r.url != null) {
+					emb.setTitle(r.title, r.url);
+				} else {
+					emb.setTitle(r.title);
+				}
 			for (Pair<String, String> k : r.fields) {
 				String f = k.getValue();
 				if (f == null || f.trim().equals(""))
@@ -155,8 +172,13 @@ public class DiscordHandler extends Handler {
 				emb.addField(k.getKey(), f, false);
 //						System.out.println("Added field " + k + " (" + r.fields.get(k) + ")");
 			}
-			if (r.footer != null)
-				emb.setFooter(r.footer, null);
+			if (r.footer != null) {
+				if(r.footerImage != null) {
+					emb.setFooter(r.footer, r.footerImage);
+				} else {
+					emb.setFooter(r.footer, null);
+				}
+			}
 
 			if (r.description != null)
 				emb.setDescription(r.description);
@@ -165,12 +187,31 @@ public class DiscordHandler extends Handler {
 				emb.setColor(r.color);
 			else
 				emb.setColor(Color.BLUE);
-
+			
+			System.out.println(r.title + ": Img(" + r.image + ")");
+			
+			if(r.image != null)
+				emb.setImage(r.image);
+			
 			if (r.commands.size() != 0) {
 				emb.addField("Select", commands, false);
 			}
 			
-			c.sendMessage(emb.build()).queue(msg -> {
+			MessageAction act = c.sendMessage(emb.build());
+			
+			if(r.image != null){
+				InputStream file;
+				try {
+					file = new URL(r.image).openStream();
+					emb.setImage("attachment://eimg.png");
+					act = c.sendFile(file, "eimg.png").embed(emb.build());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			act.queue(msg -> {
 				for (Pair<String, String> string : reactions) {
 					MessageCommand cmd = new MessageCommand();
 					cmd.command = string.getValue();
