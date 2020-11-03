@@ -4,6 +4,7 @@ import org.xbf.core.XBF;
 import org.xbf.core.Exceptions.AnnotationNotPresent;
 import org.xbf.core.Exceptions.HandlerLoadingFailed;
 import org.xbf.core.Plugins.DependsOn;
+import org.xbf.core.Plugins.PluginLoader;
 import org.xbf.core.Plugins.PluginVersion;
 import org.xbf.core.Plugins.XPlugin;
 import org.xbf.core.Plugins.XervinJavaPlugin;
@@ -16,7 +17,7 @@ public class DiscordPlugin extends XervinJavaPlugin {
 	@Override
 	public void register() {
 		try {
-			XBF.registerHandler(DiscordHandler.class);
+			handler = (DiscordHandler) XBF.registerHandler(DiscordHandler.class);
 		} catch (AnnotationNotPresent e) {
 			e.printStackTrace();
 		} catch (HandlerLoadingFailed e) {
@@ -28,6 +29,15 @@ public class DiscordPlugin extends XervinJavaPlugin {
 		}
 	}
 	
+	DiscordHandler handler;
+	
+	public DiscordHandler getHandler() {
+		return handler;
+	}
+	
+	public static DiscordPlugin getInstance() {
+		return (DiscordPlugin) PluginLoader.getPlugins().get("discord-jda-provider");
+	}
 	
 	public static DiscordPluginConfig cfg;
 	

@@ -33,7 +33,7 @@ import net.dv8tion.jda.api.requests.restaction.MessageAction;
 @XHandler(providerName="discord")
 public class DiscordHandler extends Handler {
 
-	public static JDA client;
+	public JDA client;
 
 	private boolean ready;
 
@@ -91,13 +91,13 @@ public class DiscordHandler extends Handler {
 		super.stop();
 	}
 
-	public final static String[] em = new String[] { "\uD83C\uDDE6", "\uD83C\uDDE7", "\uD83C\uDDE8", "\uD83C\uDDE9",
+	public final String[] em = new String[] { "\uD83C\uDDE6", "\uD83C\uDDE7", "\uD83C\uDDE8", "\uD83C\uDDE9",
 			"\uD83C\uDDEA", "\uD83C\uDDEB", "\uD83C\uDDEC", "\uD83C\uDDED", "\uD83C\uDDEE", "\uD83C\uDDEF",
 			"\uD83C\uDDF0", "\uD83C\uDDF1", "\uD83C\uDDF2", "\uD83C\uDDF3", "\uD83C\uDDF4", "\uD83C\uDDF5",
 			"\uD83C\uDDF6", "\uD83C\uDDF7", "\uD83C\uDDF8", "\uD83C\uDDF9", "\uD83C\uDDFA", "\uD83C\uDDFB",
 			"\uD83C\uDDFC", "\uD83C\uDDFD", "\uD83C\uDDFE", "\uD83C\uDDFF" };
 
-	public static void RunCommand(Request req, MessageChannel c, long userId, long messageId, User u) {
+	public void RunCommand(Request req, MessageChannel c, long userId, long messageId, User u) {
 		if (req.user == null) {
 
 			// Old user confirmation code
@@ -116,7 +116,7 @@ public class DiscordHandler extends Handler {
 		RunCommand(req, c, messageId, u);
 	}
 
-	public static void RunCommand(final Request req, final MessageChannel c, final long messageId, final User usr) {
+	public void RunCommand(final Request req, final MessageChannel c, final long messageId, final User usr) {
 		if(req.user == null) return;
 		Thread t = new Thread(new Runnable() {
 
@@ -142,7 +142,7 @@ public class DiscordHandler extends Handler {
 		t.start();
 	}
 
-	public static void SendResponse(Response res, MessageChannel c) {
+	public void SendResponse(Response res, MessageChannel c) {
 		if (res.text != null)
 			c.sendMessage(res.text).complete();
 		for (RichResponse r : res.responses) {
@@ -228,7 +228,7 @@ public class DiscordHandler extends Handler {
 
 	}
 	
-	public static String stringToBytes(String str) {
+	public String stringToBytes(String str) {
 		String s = "";
 		byte[] barr = str.getBytes();
 		for (int i = 0; i < barr.length; i++) {

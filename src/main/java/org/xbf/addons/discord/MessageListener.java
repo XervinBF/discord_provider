@@ -18,7 +18,7 @@ public class MessageListener extends ListenerAdapter {
 		if (DiscordHandler.fail)
 			return;
 		try {
-			if (DiscordHandler.client.getSelfUser().getIdLong() == event.getAuthor().getIdLong()) {
+			if (DiscordPlugin.getInstance().getHandler().client.getSelfUser().getIdLong() == event.getAuthor().getIdLong()) {
 				return;
 			}
 			if(event.getMessage().getAuthor().isBot()) return;
@@ -37,7 +37,7 @@ public class MessageListener extends ListenerAdapter {
 			MessageChannel c = event.getMessage().getChannel();
 			
 			
-			DiscordHandler.RunCommand(req, c,
+			DiscordPlugin.getInstance().getHandler().RunCommand(req, c,
 					event.getMessage().getAuthor().getIdLong(), event.getMessageIdLong(), event.getMessage().getAuthor());
 		} catch (Exception e) {
 			try {

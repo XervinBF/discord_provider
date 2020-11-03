@@ -14,7 +14,7 @@ public class ReactionListener extends ListenerAdapter {
 
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event) {
-		if (DiscordHandler.client.getSelfUser().getIdLong() == event.getUserIdLong()) {
+		if (DiscordPlugin.getInstance().getHandler().client.getSelfUser().getIdLong() == event.getUserIdLong()) {
 			return;
 		}
 		long msgid = Long.parseLong(event.getMessageId());
@@ -23,7 +23,7 @@ public class ReactionListener extends ListenerAdapter {
 			String command = null;
 			List<MessageCommand> cmds = MessageCommand.getSmartTable().getMultiple(query);
 			for (MessageCommand p : cmds) {
-				if (p.reactionEmote.equals(DiscordHandler.stringToBytes(event.getReactionEmote().getEmoji()))) {
+				if (p.reactionEmote.equals(DiscordPlugin.getInstance().getHandler().stringToBytes(event.getReactionEmote().getEmoji()))) {
 					command = p.command;
 				}
 			}
@@ -36,7 +36,7 @@ public class ReactionListener extends ListenerAdapter {
 				req.user = XUser.getFromProvider(event.getUser().getId(), "Discord", event.getUser().getName());
 				req.origid = event.getUserId();
 				req.providerName = event.isFromGuild() ? event.getMember().getEffectiveName() : event.getUser().getName();
-				DiscordHandler.RunCommand(req, event.getChannel(), event.getMessageIdLong(), event.getUser());
+				DiscordPlugin.getInstance().getHandler().RunCommand(req, event.getChannel(), event.getMessageIdLong(), event.getUser());
 			}
 		}
 	}
