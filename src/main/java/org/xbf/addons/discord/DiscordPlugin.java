@@ -10,7 +10,7 @@ import org.xbf.core.Plugins.XPlugin;
 import org.xbf.core.Plugins.XervinJavaPlugin;
 
 @XPlugin(name="discord-jda-provider", displayname="Discord JDA Bot Provider", description="Provides a Discord Bot interface for XBF")
-@PluginVersion(currentVersion="1.0.0")
+@PluginVersion(currentVersion="1.1.0")
 @DependsOn(pluginName="xbf", minimumVersion="0.0.8")
 public class DiscordPlugin extends XervinJavaPlugin {
 
