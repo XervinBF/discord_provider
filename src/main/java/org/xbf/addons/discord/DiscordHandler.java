@@ -39,6 +39,8 @@ public class DiscordHandler extends Handler {
 
 	private Logger l = (Logger) LoggerFactory.getLogger(getClass());
 
+	public static ArrayList<Object> customEventHandlers = new ArrayList<Object>();
+	
 	public static boolean fail;
 
 	@Override
@@ -54,7 +56,9 @@ public class DiscordHandler extends Handler {
 			sw.start("Discord.CreateClient");
 			JDABuilder builder = new JDABuilder(DiscordPlugin.cfg.discordBotToken)
 					.addEventListeners(new MessageListener())
-					.addEventListeners(new ReactionListener());
+					.addEventListeners(new ReactionListener())
+					.addEventListeners(customEventHandlers);
+					
 			l.info("Building client");
 			client = null;
 			try {
