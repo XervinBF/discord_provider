@@ -28,6 +28,9 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 @XHandler(providerName="discord")
@@ -57,7 +60,8 @@ public class DiscordHandler extends Handler {
 			JDABuilder builder = new JDABuilder(DiscordPlugin.cfg.discordBotToken)
 					.addEventListeners(new MessageListener())
 					.addEventListeners(new ReactionListener())
-					.addEventListeners(customEventHandlers);
+					.addEventListeners(customEventHandlers.toArray(new EventListener[0]));
+			
 					
 			l.info("Building client");
 			client = null;
@@ -126,8 +130,9 @@ public class DiscordHandler extends Handler {
 
 			@Override
 			public void run() {
-
+//				l.trace(new Gson().toJson(req));
 				Response res = CommandProcessor.runRequest(req);
+//				l.trace(new Gson().toJson(res));
 				if (res == null)
 					return;
 
@@ -135,7 +140,6 @@ public class DiscordHandler extends Handler {
 					c.retrieveMessageById(messageId).complete().delete().complete();
 				}
 
-//				l.debug(new Gson().toJson(res));
 				if(res.destination == ResponseDestination.USER_PRIVATE) {
 					SendResponse(res, usr.openPrivateChannel().complete());
 				} else if(res.destination == ResponseDestination.SAME_CHANNEL) {

@@ -1,5 +1,8 @@
 package org.xbf.addons.discord;
 
+import org.xbf.addons.core_http.APIServer;
+import org.xbf.addons.core_http.HttpServerPlugin;
+import org.xbf.addons.discord.http_addon.Login;
 import org.xbf.core.XBF;
 import org.xbf.core.Exceptions.AnnotationNotPresent;
 import org.xbf.core.Exceptions.HandlerLoadingFailed;
@@ -26,6 +29,15 @@ public class DiscordPlugin extends XervinJavaPlugin {
 		cfg = getConfig(DiscordPluginConfig.class);
 		if(cfg.discordBotToken == null) {
 			logger.error("No discord bot token provided!");
+		}
+	}
+	
+	@Override
+	public void onEnable() {
+		Object obj = PluginLoader.getPlugins().get("core_http");
+		if(obj != null) {
+			HttpServerPlugin pl = (HttpServerPlugin) obj;
+			APIServer.handlers.add(new Login());
 		}
 	}
 	

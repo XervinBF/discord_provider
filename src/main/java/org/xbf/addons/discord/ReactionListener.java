@@ -7,7 +7,10 @@ import org.xbf.core.Models.MessageCommand;
 import org.xbf.core.Models.XUser;
 import org.xbf.core.Utils.Map.FastMap;
 
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class ReactionListener extends ListenerAdapter {
@@ -40,5 +43,6 @@ public class ReactionListener extends ListenerAdapter {
 			}
 		}
 	}
+
 	
 }
