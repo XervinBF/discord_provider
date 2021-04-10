@@ -1,5 +1,7 @@
 package org.xbf.addons.discord;
 
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import org.xbf.core.Messages.Request;
@@ -26,7 +28,7 @@ public class ReactionListener extends ListenerAdapter {
 			String command = null;
 			List<MessageCommand> cmds = MessageCommand.getSmartTable().getMultiple(query);
 			for (MessageCommand p : cmds) {
-				if (p.reactionEmote.equals(DiscordPlugin.getInstance().getHandler().stringToBytes(event.getReactionEmote().getEmoji()))) {
+				if (p.reactionEmote.equals("e:" + Arrays.asList(DiscordPlugin.getInstance().getHandler().em).indexOf(event.getReactionEmote().getEmoji()))) {
 					command = p.command;
 				}
 			}

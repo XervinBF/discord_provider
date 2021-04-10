@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 
 import javax.security.auth.login.LoginException;
 
@@ -223,8 +226,7 @@ public class DiscordHandler extends Handler {
 				for (Pair<String, String> string : reactions) {
 					MessageCommand cmd = new MessageCommand();
 					cmd.command = string.getValue();
-					
-					cmd.reactionEmote = stringToBytes(string.getKey());
+					cmd.reactionEmote = "e:" + Arrays.asList(em).indexOf(string.getKey());
 					cmd.messageId = msg.getIdLong();
 					cmd.source = "Discord";
 					MessageCommand.getSmartTable().set(cmd);
