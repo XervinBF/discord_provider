@@ -157,7 +157,6 @@ public class DiscordHandler extends Handler {
 		if (res.text != null)
 			c.sendMessage(res.text).complete();
 		for (RichResponse r : res.responses) {
-			System.out.println(new Gson().toJson(r));
 			String commandRep = "";
 			String[] alf = "abcdefghijklmnop".split("");
 			int i = 0;
